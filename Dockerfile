@@ -7,7 +7,15 @@ USER root
 COPY . /home/main/notebooks/
 RUN chown -R main:main $HOME/notebooks
 # Install R kernel to Jupyter notebook
+RUN apt-get update
 RUN conda install -y -c r ipython-notebook r-irkernel
+RUN apt-get install -y julia libnettle4 
+RUN apt-get clean
+
+USER main
+# Install Julia kernel
+RUN julia -e 'Pkg.add("IJulia")'
+RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")
 USER main
 
 RUN find $HOME/notebooks -name '*.ipynb' -exec jupyter trust {} \;
