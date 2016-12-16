@@ -16,12 +16,6 @@ USER main
 # Install Julia kernel
 RUN julia -e 'Pkg.add("IJulia")'
 RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")
-USER main
-
 RUN find $HOME/notebooks -name '*.ipynb' -exec jupyter trust {} \;
 
-
-
-
-USER main
 WORKDIR $HOME/notebooks
